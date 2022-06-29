@@ -35,6 +35,12 @@ const createUser = async (req, res, next) => {
       );
     }
 
+    const userFinder = await User.findOne({where: { username: body.username } })
+
+    if(userFinder){
+      throw new ApiError("User already exists", 400);
+    }
+
     const user = await User.create({
       username: body.username,
       password: body.password,
